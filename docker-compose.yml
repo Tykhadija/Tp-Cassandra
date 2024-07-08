@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  cassandra:
+    image: cassandra:3.11
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_KEYSPACE: your_keyspace_name
+
+  app:
+    build: .
+    depends_on:
+      - cassandra
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_CASSANDRA_CONTACT_POINTS: cassandra
+      SPRING_DATA_CASSANDRA_PORT: 9042
+      SPRING_DATA_CASSANDRA_LOCAL_DATACENTER: datacenter1
+      SPRING_DATA_CASSANDRA_KEYSPACE_NAME: your_keyspace_name
